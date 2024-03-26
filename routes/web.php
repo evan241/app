@@ -1,31 +1,16 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+/*DB::listen(function ($query){
+    dump($query->sql);
+});*/
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [NotificationController::class, 'index'])->name('notifications.index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/', [NotificationController::class, 'store'])->name('notifications.store');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/history', [NotificationController::class, 'showHistory'])->name('notifications.history');
 
-require __DIR__.'/auth.php';
+Route::post('/search-by-date', [NotificationController::class, 'searchByDate'])->name('notifications.searchByDate');
