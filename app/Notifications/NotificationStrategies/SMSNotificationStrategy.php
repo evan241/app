@@ -1,9 +1,10 @@
 <?php
 
-namespace App\NotificationStrategies;
+namespace App\Notifications\NotificationStrategies;
 
 use App\Models\User;
-use App\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
+use Illuminate\Support\Facades\Log;
 
 class SMSNotificationStrategy implements NotificationStrategy
 {
@@ -19,7 +20,7 @@ class SMSNotificationStrategy implements NotificationStrategy
         // Check if the user has a phone number for SMS notifications
         if (empty($user->phone)) {
             // If the user does not have a phone number, log an error message and return false
-            \Log::error("User {$user->id} does not have a phone number for SMS notifications.");
+            //\Log::error("User {$user->id} does not have a phone number for SMS notifications.");
             return "User {$user->id} does not have a phone number for SMS notifications.";
         }
 

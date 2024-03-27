@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
 use App\Notifications\NotificationLogger;
 use App\Models\User;
 use Exception;

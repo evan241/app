@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('user_name');
             $table->string('user_email')->nullable();
             $table->string('user_phone')->nullable();
+            $table->string('token_device')->nullable();
             $table->foreignId('message_category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('notification_channel_id')->constrained()->cascadeOnDelete();
             $table->string('send_status');

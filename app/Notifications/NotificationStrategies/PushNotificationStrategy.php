@@ -1,9 +1,10 @@
 <?php
 
-namespace App\NotificationStrategies;
+namespace App\Notifications\NotificationStrategies;
 
 use App\Models\User;
-use App\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
+use Illuminate\Support\Facades\Log;
 
 class PushNotificationStrategy implements NotificationStrategy
 {
@@ -19,7 +20,7 @@ class PushNotificationStrategy implements NotificationStrategy
         // Check if the user has a device token for push notifications
         if (empty($user->token_device)) {
             // If the user does not have a device token, log an error message and return false
-            \Log::error("User {$user->id} does not have a device token for push notifications.");
+            //\Log::error("User {$user->id} does not have a device token for push notifications.");
             return "User {$user->id} does not have a device token for push notifications.";
         }
 

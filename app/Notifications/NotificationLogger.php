@@ -2,9 +2,10 @@
 
 namespace App\Notifications;
 
-use App\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
 use App\Models\User;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Log;
 
 class NotificationLogger
 {
@@ -27,6 +28,7 @@ class NotificationLogger
             'user_name' => $user->name,
             'user_email' => $user->email,
             'user_phone' => $user->phone,
+            'token_device' => $user->token_device,
             'message_category_id' => $categoryId,
             'message_category_name' => $categoryName,
             'notification_channel_id' => $channelId,
@@ -37,7 +39,7 @@ class NotificationLogger
         ];
 
         // Writing to log file:
-        \Log::info('Notification sent: ' . json_encode($logData));
+        Log::info('Notification sent: ' . json_encode($logData));
 
         // Create an instance of the notification record model and assign the values
         $notificationLog = new Notification();
@@ -45,6 +47,7 @@ class NotificationLogger
         $notificationLog->user_name = $user->name;
         $notificationLog->user_email = $user->email;
         $notificationLog->user_phone = $user->phone;
+        $notificationLog->token_device = $user->token_device;
         $notificationLog->message_category_id = $categoryId;
         $notificationLog->notification_channel_id = $channelId;
         $notificationLog->message = $message;

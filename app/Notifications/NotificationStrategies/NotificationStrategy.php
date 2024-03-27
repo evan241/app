@@ -1,6 +1,6 @@
 <?php
 
-namespace App\NotificationStrategies;
+namespace App\Notifications\NotificationStrategies;
 
 use App\Models\User;
 

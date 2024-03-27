@@ -2,10 +2,12 @@
 
 namespace App\Notifications;
 
-use App\NotificationStrategies\NotificationStrategy;
-use App\NotificationStrategies\EmailNotificationStrategy;
-use App\NotificationStrategies\SMSNotificationStrategy;
-use App\NotificationStrategies\PushNotificationStrategy;
+use Illuminate\Support\Facades\Log;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\EmailNotificationStrategy;
+use App\Notifications\NotificationStrategies\SMSNotificationStrategy;
+use App\Notifications\NotificationStrategies\PushNotificationStrategy;
+use App\Notifications\NotificationStrategies\FallBackNotificationStrategy;
 
 class NotificationFactory
 {
@@ -25,8 +27,8 @@ class NotificationFactory
             case 'push':
                 return new PushNotificationStrategy();
             default:
-                \Log::warning("Unknown notification strategy type: $channelName");
-                //throw new \InvalidArgumentException("Unknown notification strategy type: $channelName");
+                return new FallbackNotificationStrategy();
+                //\Log::warning("Unknown notification strategy type: $channelName");
         }
     }
 }
