@@ -5,17 +5,36 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Mockery;
 
 use App\Models\Notification;
+use App\Repositories\MessageCategoryRepository;
 
 class NotificationControllerTest extends TestCase
 {
     /** @test */
-    public function index(): void
+    public function index()
     {
+        // Post Category Repository Mock
+        $messageCategoryRepositoryMock = Mockery::mock(MessageCategoryRepository::class);
+        
+       // We simulate that getAllCategories returns an empty array to simplify the test
+        $messageCategoryRepositoryMock->shouldReceive('getAllCategories')->andReturn([]);
+        
+        // Bind mock repository in controller
+        $this->app->instance(MessageCategoryRepository::class, $messageCategoryRepositoryMock);
+
+        // Make a GET request to the controller route
         $response = $this->get(route('notifications.index'));
+
+        // Verify that the response has a status code of 200
         $response->assertStatus(200);
+        
+        // Verify that the returned view is 'notifications.index'
         $response->assertViewIs('notifications.index');
+        
+        // Verify that the 'messageCategories' variable is present in the view
+        $response->assertViewHas('messageCategories');
     }
 
     /** @test */

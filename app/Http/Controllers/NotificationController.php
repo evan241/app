@@ -31,9 +31,16 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return view('notifications.index', [
-            'messageCategories' => $this->messageCategoryRepository->getAllCategories()
-        ]);
+        try {
+            $messageCategories = $this->messageCategoryRepository->getAllCategories();
+        } catch (\Exception $e) {
+            // Manejar el error de alguna manera, como registrar un mensaje de error
+            \Log::error('Error al obtener las categorías de mensajes: ' . $e->getMessage());
+            // Podrías establecer $messageCategories como un valor predeterminado o vacío en caso de error
+            $messageCategories = [];
+        }
+        
+        return view('notifications.index', compact('messageCategories'));
     }
 
     /**
