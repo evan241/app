@@ -34,9 +34,9 @@ class NotificationController extends Controller
         try {
             $messageCategories = $this->messageCategoryRepository->getAllCategories();
         } catch (\Exception $e) {
-            // Manejar el error de alguna manera, como registrar un mensaje de error
+            // Error handling
             \Log::error('Error al obtener las categorías de mensajes: ' . $e->getMessage());
-            // Podrías establecer $messageCategories como un valor predeterminado o vacío en caso de error
+            // Set $messageCategories to a default or empty value on error
             $messageCategories = [];
         }
         
