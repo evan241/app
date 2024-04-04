@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('message');
+            $table->text('message');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('user_name');
-            $table->string('user_email')->nullable();
-            $table->string('user_phone')->nullable();
-            $table->string('token_device')->nullable();
+            $table->string('user_name', 100);
+            $table->string('user_email', 100)->nullable();
+            $table->string('user_phone', 20)->nullable();
+            $table->string('token_device', 255)->nullable();
             $table->foreignId('message_category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('notification_channel_id')->constrained()->cascadeOnDelete();
-            $table->string('send_status');
+            $table->string('send_status', 50);
             $table->timestamps();
         });
     }

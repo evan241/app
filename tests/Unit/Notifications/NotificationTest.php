@@ -168,20 +168,18 @@ class NotificationTest extends TestCase
     }
 
     /** @test */
-    /*public function it_logs_notification_and_saves_to_database()
+    /*public function it_logs_notification_and_saves_to_database(): void
     {
-        // User setup and notification details
-        $user = new User();
-        $user->id = 1;
-        $user->phone = '1234567890';
-        $message = 'Test notification message';
-        $categoryId = 1;
-        $categoryName = 'Test Category';
-        $channelId = 1;
-        $channelName = 'Test Channel';
-        $status = 'success';
+        // Create a mock user
+        $user = new User([
+            'id' => 1,
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'phone' => '1234567890',
+            'token_device' => 'device_token',
+        ]);
 
-        // Expecting the Log::info() method to be called with the correct data
+        // Set up expectations for the Log facade
         Log::shouldReceive('info')->once()->with(
             'Notification sent: ' . json_encode([
                 'user_id' => $user->id,
@@ -189,30 +187,38 @@ class NotificationTest extends TestCase
                 'user_email' => $user->email,
                 'user_phone' => $user->phone,
                 'token_device' => $user->token_device,
-                'message_category_id' => $categoryId,
-                'message_category_name' => $categoryName,
-                'notification_channel_id' => $channelId,
-                'notification_channel' => $channelName,
-                'message' => $message,
+                'message_category_id' => 1,
+                'message_category_name' => 'Test Category',
+                'notification_channel_id' => 1,
+                'notification_channel' => 'Test Channel',
+                'message' => 'Test notification message',
                 'datetime' => now()->toDateTimeString(),
-                'send_status' => $status,
+                'send_status' => 'success',
             ])
         );
 
-        // Expecting the Log::info() method to be called with the correct data
-        NotificationLogger::logNotification($user, $message, $categoryId, $categoryName, $channelId, $channelName, $status);
+        // Call the logNotification method to log the notification
+        NotificationLogger::logNotification(
+            $user,
+            'Test notification message',
+            1,
+            'Test Category',
+            1,
+            'Test Channel',
+            'success'
+        );
 
-        // Verify that it has been created and saved correctly in the database
+        // Verify that the notification record has been saved to the database
         $this->assertDatabaseHas('notifications', [
             'user_id' => $user->id,
             'user_name' => $user->name,
             'user_email' => $user->email,
             'user_phone' => $user->phone,
             'token_device' => $user->token_device,
-            'message_category_id' => $categoryId,
-            'notification_channel_id' => $channelId,
-            'message' => $message,
-            'send_status' => $status,
+            'message_category_id' => 1,
+            'notification_channel_id' => 1,
+            'message' => 'Test notification message',
+            'send_status' => 'success',
         ]);
     }*/
 }

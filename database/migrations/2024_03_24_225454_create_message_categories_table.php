@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('message_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('description')->nullable();
+            $table->string('description', 255)->nullable();
             $table->timestamps();
         });
 

@@ -110,32 +110,28 @@
         // Mostrar u ocultar los campos según la opción seleccionada
         selectField.addEventListener('change', function() {
             const selectedOption = this.value;
+            hideAllFields([dateFields, searchForFields, categoryFields, channelFields]);
             if (selectedOption === 'created_at') {
-                dateFields.style.display = 'block';
-                searchForFields.style.display = 'none';
-                categoryFields.style.display = 'none';
-                channelFields.style.display = 'none';
+                showFields([dateFields]);
             } else if (selectedOption === 'message_category_id') {
-                dateFields.style.display = 'none';
-                searchForFields.style.display = 'none';
-                categoryFields.style.display = 'block';
-                channelFields.style.display = 'none';
+                showFields([categoryFields]);
             } else if (selectedOption === 'notification_channel_id') {
-                dateFields.style.display = 'none';
-                searchForFields.style.display = 'none';
-                categoryFields.style.display = 'none';
-                channelFields.style.display = 'block';
+                showFields([channelFields]);
             } else if (selectedOption === 'user_name' || selectedOption === 'user_email' || selectedOption === 'user_phone' || selectedOption === 'send_status') {
-                dateFields.style.display = 'none';
-                searchForFields.style.display = 'block';
-                categoryFields.style.display = 'none';
-                channelFields.style.display = 'none';
-            } else{
-                dateFields.style.display = 'none';
-                searchForFields.style.display = 'none';
-                categoryFields.style.display = 'none';
-                channelFields.style.display = 'none';
+                showFields([searchForFields]);
             }
         });
     });
+
+    function showFields(fields) {
+        fields.forEach(field => {
+            field.style.display = 'block';
+        });
+    }
+
+    function hideAllFields(fields) {
+        fields.forEach(field => {
+            field.style.display = 'none';
+        });
+    }
 </script>
