@@ -1,9 +1,10 @@
 <?php
 
-namespace App\NotificationStrategies;
+namespace App\Notifications\NotificationStrategies;
 
 use App\Models\User;
-use App\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
+use Illuminate\Support\Facades\Log;
 
 class EmailNotificationStrategy implements NotificationStrategy
 {
@@ -19,7 +20,7 @@ class EmailNotificationStrategy implements NotificationStrategy
         // Check if the user has a valid email address
         if (!filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
             // If the email address is not valid, return false and log an error message
-            \Log::error("User {$user->id} does not have a valid email address.");
+            //\Log::error("User {$user->id} does not have a valid email address.");
             return "User {$user->id} does not have a valid email address.";
         }
 

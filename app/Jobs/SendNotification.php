@@ -7,9 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
 use App\Notifications\NotificationFactory;
 use App\Notifications\NotificationContext;
+use Illuminate\Support\Facades\Log;
+use Exception;
+
 
 class SendNotification implements ShouldQueue
 {
@@ -54,7 +57,12 @@ class SendNotification implements ShouldQueue
             $notificationContext->sendNotification($this->message, $this->user, $this->categoryId, $this->categoryName, $this->channelId, $this->channelName);
 
         } catch (\Exception $e) {
-            Log::error('Error processing job: ' . $e->getMessage());
+            Log::error('Error processing job: ' . $e->getMessage(), [
+                'message' => $this->message,
+                'user_id' => $this->user->id,
+                'category_id' => $this->categoryId,
+                'channel_id' => $this->channelId,
+            ]);
         }
     }
 
@@ -64,7 +72,7 @@ class SendNotification implements ShouldQueue
      * @param  \Exception  $exception
      * @return void
      */
-    public function failed(\Exception $exception)
+    public function failed(Exception $exception)
     {
         // Number of retrieds exceeded
         Log::error('Job failed: ' . $exception->getMessage());

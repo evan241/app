@@ -2,18 +2,18 @@
 
 namespace App\Notifications;
 
-use App\NotificationStrategies\NotificationStrategy;
+use App\Notifications\NotificationStrategies\NotificationStrategy;
 use App\Notifications\NotificationLogger;
 use App\Models\User;
 use Exception;
 
 class NotificationContext
 {
-    protected NotificationStrategy $strategy;
+    protected $strategy;
 
     public function __construct(NotificationStrategy $strategy)
     {
-        $this->strategy = $strategy;
+        $this->setStrategy($strategy);
     }
 
     /**

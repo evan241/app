@@ -257,5 +257,14 @@
     "The message category field is required.": "El campo de categoría de mensaje es obligatorio.",
     "The message cannot be more than :max characters.": "El mensaje no puede tener más de :max caracteres.",
     "The message category is required.": "La categoría de mensaje es obligatoria.",
-    "The selected message category is not valid.": "La categoría de mensaje seleccionada no es válida."
+    "The selected message category is not valid.": "La categoría de mensaje seleccionada no es válida.",
+    "Search by": "Buscar por",
+    "Field": "Campo",
+    "Date": "Fecha",
+    "Phone": "Teléfono",
+    "Category": "Categoría",
+    "Channel": "Canal",
+    "Status": "Estado",
+    "No results found.": "No se encontraron resultados",
+    "Select a channel": "Selecciona un canal"
 }

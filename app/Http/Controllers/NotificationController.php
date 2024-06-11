@@ -6,21 +6,26 @@ use App\Jobs\SendNotification;
 use App\Repositories\NotificationRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\MessageCategoryRepository;
+use App\Repositories\NotificationChannelRepository;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Log;
+use App\Models\Notification;
 
 class NotificationController extends Controller
 {
     protected $notificationRepository;
     protected $userRepository;
     protected $messageCategoryRepository;
+    protected $notificationChannelRepository;
 
-    public function __construct(NotificationRepository $notificationRepository, UserRepository $userRepository, MessageCategoryRepository $messageCategoryRepository)
+    public function __construct(NotificationRepository $notificationRepository, UserRepository $userRepository, MessageCategoryRepository $messageCategoryRepository, NotificationChannelRepository $notificationChannelRepository)
     {
         $this->notificationRepository = $notificationRepository;
         $this->userRepository = $userRepository;
         $this->messageCategoryRepository = $messageCategoryRepository;
+        $this->notificationChannelRepository = $notificationChannelRepository;
     }
 
     /**
@@ -28,9 +33,16 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return view('notifications.index', [
-            'messageCategories' => $this->messageCategoryRepository->getAllCategories()
-        ]);
+        try {
+            $messageCategories = $this->messageCategoryRepository->getAllCategories();
+        } catch (\Exception $e) {
+            // Error handling
+            Log::error('Error al obtener las categorías de mensajes: ' . $e->getMessage());
+            // Set $messageCategories to a default or empty value on error
+            $messageCategories = [];
+        }
+
+        return view('notifications.index', compact('messageCategories'));
     }
 
     /**
@@ -87,31 +99,30 @@ class NotificationController extends Controller
         //
     }
 
-    public function showHistory(){
+    public function showHistory(Request $request){
+
+        $notifications = $this->notificationRepository->getSearchNotificationsWithRelations(
+            $request->get('field'),
+            $request->get('search_for'),
+            $request->get('start_date'),
+            $request->get('end_date'),
+            $request->get('message_category_id'),
+            $request->get('notification_channel_id')
+        );
+
         return view('notifications.history', [
-            'notifications' => $this->notificationRepository->getAllNotificationsWithRelations()
+            'notifications' => $notifications,
+            'messageCategories' => $this->messageCategoryRepository->getAllCategories(),
+            'notificationChannels' => $this->notificationChannelRepository->getAllChannels(),
+            'oldField' => $request->get('field'),
+            'oldSearchFor' => $request->get('search_for'),
+            'oldStartDate' => $request->get('start_date'),
+            'oldEndDate' => $request->get('end_date'),
+            'oldMessageCategoryId' => $request->get('message_category_id'),
+            'oldNotificationChannelId' => $request->get('notification_channel_id')
         ]);
     }
 
-    public function searchByDate(Request $request)
-    {
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        $notifications = $this->notificationRepository->searchByDate($startDate, $endDate);
-
-        return view('notifications.history', ['notifications' => $notifications]);
-    }
-
-    public function searchByUser(Request $request)
-    {
-        $userId = $request->input('user_id');
-
-        $notifications = $this->notificationRepository->searchByUser($userId);
-
-        return view('notifications.history', ['notifications' => $notifications]);
-    }
-    
     /**
      * Show the form for editing the specified resource.
      */
