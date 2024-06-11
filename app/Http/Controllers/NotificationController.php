@@ -41,7 +41,6 @@ class NotificationController extends Controller
             // Set $messageCategories to a default or empty value on error
             $messageCategories = [];
         }
-
         return view('notifications.index', compact('messageCategories'));
     }
 
